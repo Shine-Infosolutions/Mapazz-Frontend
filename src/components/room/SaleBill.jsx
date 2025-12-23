@@ -51,7 +51,7 @@ const SaleBill = () => {
             </div>
             
             <div className="text-center mb-6">
-              <div className="font-bold text-2xl">HAVANA HOTEL</div>
+              <div className="font-bold text-2xl">MAPAZZ HOTEL</div>
               <div className="text-lg">Room Service Bill</div>
               <div className="text-lg">================================</div>
             </div>

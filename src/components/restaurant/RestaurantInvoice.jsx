@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import ashokaLogo from '../../assets/hawana golden png.png';
+import ashokaLogo from '../../assets/Mapazz.png';
 import { RiPhoneFill, RiMailFill } from 'react-icons/ri';
 import { useAppContext } from '../../context/AppContext';
 
@@ -405,14 +405,14 @@ export default function RestaurantInvoice({ orderData: propOrderData, isEmbedded
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mb-4 space-y-4 lg:space-y-0">
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
               <div className="w-20 h-20 sm:w-24 sm:h-24">
-                <img src={ashokaLogo} alt="Havana Logo" className="w-full h-full object-contain" />
+                <img src={ashokaLogo} alt="Mapazz Logo" className="w-full h-full object-contain" />
               </div>
               <div className="text-xs text-center sm:text-left">
-                <p className="font-bold text-sm sm:text-base">HOTEL HAVANA </p>
+                <p className="font-bold text-sm sm:text-base">HOTEL MAPAZZ </p>
                 <p className="text-xs">Deoria Bypass Rd, near LIC Office Gorakhpur</p>
                 <p className="text-xs">Taramandal, Gorakhpur, Uttar Pradesh 273016</p>
-                <p className="text-xs">Website: <a href="https://hotelhavana.com" className="text-blue-600">hotelhavana.com</a></p>
-                <p className="text-xs">contact@hotelhavana.in</p>
+                <p className="text-xs">Website: <a href="https://hotelmapazz.com" className="text-blue-600">hotelmapazz.com</a></p>
+                <p className="text-xs">contact@hotelmapazz.in</p>
                 <p className="text-xs font-semibold">GSTIN: 09ACIFA2416J1ZF</p>
               </div>
             </div>
@@ -423,7 +423,7 @@ export default function RestaurantInvoice({ orderData: propOrderData, isEmbedded
               </div>
               <div className="text-xs flex items-center space-x-2">
                 <RiMailFill className="text-lg text-yellow-600" />
-                <span>contact@hotelhavana.in</span>
+                <span>contact@hotelmapazz.in</span>
               </div>
             </div>
           </div>

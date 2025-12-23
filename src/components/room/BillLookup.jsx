@@ -150,7 +150,7 @@ const BillLookup = () => {
                   Back
                 </button>
                 <div className="text-center flex-1">
-                  <h2 className="text-3xl font-bold mb-2" style={{color: 'var(--color-text)'}}>HAVANA HOTEL</h2>
+                  <h2 className="text-3xl font-bold mb-2" style={{color: 'var(--color-text)'}}>MAPAZZ HOTEL</h2>
                   <p className="text-lg text-gray-600">Consolidated Room Service Bill</p>
                 </div>
                 <div className="flex gap-2 no-print">
@@ -290,7 +290,7 @@ const BillLookup = () => {
                     <div className="text-sm font-medium mb-2">Hotel GST Details:</div>
                     <div className="text-xs text-gray-600">
                       <div>GSTIN: {hotelGstNumber?.gstNumber || 'Not Available'}</div>
-                      <div>Company: {hotelGstNumber?.companyName || 'HAVANA HOTEL'}</div>
+                      <div>Company: {hotelGstNumber?.companyName || 'MAPAZZ HOTEL'}</div>
                       <div>Total GST: {gstData?.totalGST || 18}%</div>
                     </div>
                   </div>

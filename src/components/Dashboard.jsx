@@ -968,7 +968,7 @@ const Dashboard = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 mt-4 sm:mt-6 gap-4 animate-slideInLeft animate-delay-100">
         <div>
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#1f2937]">
-            HAVANA DASHBOARD
+            MAPAZZ DASHBOARD
           </h1>
           <div className="flex flex-wrap gap-2 mt-2">
             <button

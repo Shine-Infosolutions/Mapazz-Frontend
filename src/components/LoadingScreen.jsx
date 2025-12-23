@@ -1,5 +1,5 @@
 import React from 'react';
-import hotelLogo from '../assets/hawana golden png.png';
+import hotelLogo from '../assets/Mapazz.png';
 
 const LoadingScreen = () => {
   return (
@@ -24,8 +24,8 @@ const LoadingScreen = () => {
             <div className="absolute inset-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm rounded-full flex items-center justify-center animate-pulse">
               <img 
                 src={hotelLogo} 
-                alt="Havana Hotel" 
-                className="w-16 h-16 object-contain animate-bounce"
+                alt="Mapazz Hotel" 
+                className="w-24 h-24 object-contain animate-bounce"
                 style={{ animationDuration: '2s' }}
               />
             </div>
@@ -33,7 +33,7 @@ const LoadingScreen = () => {
           
           {/* Hotel Name */}
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 animate-fade-in">
-            HAVANA
+            MAPAZZ
           </h1>
           <p className="text-gray-600 text-lg animate-fade-in-delay">
             Hotel Management System

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import havanaLogo from '../assets/hawana golden png.png';
+import mapazzLogo from '../assets/Mapazz.png';
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -40,7 +40,7 @@ const Login = () => {
             
             <div className="space-y-6">
               <div className="text-center">
-                <img src={havanaLogo} alt="Havana" className="h-32 w-auto mx-auto mb-4" />
+                <img src={mapazzLogo} alt="Mapazz" className="h-48 w-auto mx-auto mb-4" />
                 <h1 className="text-3xl font-bold text-gray-800 mb-2">Login</h1>
                 <p className="text-gray-500 text-sm">Please use your email and password to login</p>
               </div>

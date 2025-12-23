@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import ashokaLogo from '../../assets/hawana golden png.png';
+import mapazzLogo from '../../assets/Mapazz.png';
 import { RiPhoneFill, RiMailFill } from 'react-icons/ri';
 import axios from 'axios';
 
@@ -121,15 +121,15 @@ export default function SharedHotelInvoice() {
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
               <div className="border border-black p-2">
                 <div className="w-16 h-16 sm:w-20 sm:h-20">
-                  <img src={ashokaLogo} alt="Havana Logo" className="w-full h-full object-cover" />
+                  <img src={mapazzLogo} alt="Mapazz Logo" className="w-full h-full object-cover" />
                 </div>
               </div>
               <div className="text-xs text-center sm:text-left">
-                <p className="font-bold text-sm sm:text-base">HAVANA HOTEL</p>
+                <p className="font-bold text-sm sm:text-base">MAPAZZ HOTEL</p>
                 <p className="text-xs">Deoria Bypass Rd, near LIC Office Gorakhpur</p>
                 <p className="text-xs">Taramandal, Gorakhpur, Uttar Pradesh 273016</p>
-                <p className="text-xs">Website: <a href="http://havana-hotel.com" className="text-blue-600">havana-hotel.com</a></p>
-                <p className="text-xs">contact@hotelhavana.in</p>
+                <p className="text-xs">Website: <a href="http://mapazz-hotel.com" className="text-blue-600">mapazz-hotel.com</a></p>
+                <p className="text-xs">contact@hotelmapazz.in</p>
               </div>
             </div>
             <div className="flex flex-col items-center space-y-2">
@@ -139,7 +139,7 @@ export default function SharedHotelInvoice() {
               </div>
               <div className="text-xs flex items-center space-x-2">
                 <RiMailFill className="text-lg text-yellow-600" />
-                <span>contact@hotelhavana.in</span>
+                <span>contact@hotelmapazz.in</span>
               </div>
             </div>
           </div>
