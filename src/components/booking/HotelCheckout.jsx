@@ -24,45 +24,44 @@ const HotelCheckout = ({ booking, onClose, onCheckoutComplete }) => {
       const token = localStorage.getItem('token');
       const bookingId = booking._id || booking.id;
       
-      // Get comprehensive charges using our new endpoint
-      const chargesResponse = await axios.get(`/api/bookings/charges/booking/${bookingId}`, {
+      // Single API call to get all checkout data
+      const response = await axios.get(`/api/checkout/comprehensive/${bookingId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      console.log('Charges API response:', chargesResponse.data);
-      const charges = chargesResponse.data.charges;
+      const { checkout, booking: bookingData, charges } = response.data;
       
-      // Create checkout data structure using correct values from charges API
+      console.log('Comprehensive checkout response:', response.data);
+      
+      // Process checkout data
       const checkoutData = {
-        bookingCharges: charges.roomCharges.taxableAmount || 0,
-        restaurantCharges: charges.summary.totalRestaurantCharges || 0,
-        roomServiceCharges: charges.summary.totalServiceCharges || 0,
-        laundryCharges: charges.summary.totalLaundryCharges || 0,
-        inspectionCharges: 0,
+        ...checkout,
+        bookingCharges: charges.roomCharges.taxableAmount || checkout.bookingCharges || 0,
+        restaurantCharges: charges.summary.totalRestaurantCharges || checkout.restaurantCharges || 0,
+        roomServiceCharges: charges.summary.totalServiceCharges || checkout.roomServiceCharges || 0,
+        laundryCharges: charges.summary.totalLaundryCharges || checkout.laundryCharges || 0,
+        inspectionCharges: checkout.inspectionCharges || 0,
         subtotal: charges.summary.subtotal || 0,
-        cgstAmount: charges.roomCharges.cgstAmount || 0,
-        sgstAmount: charges.roomCharges.sgstAmount || 0,
-        totalAmount: charges.summary.totalRoomCharges || 0,
-        status: 'pending'
+        cgstAmount: charges.summary.cgstAmount || 0,
+        sgstAmount: charges.summary.sgstAmount || 0,
+        totalAmount: charges.summary.subtotal + charges.summary.cgstAmount + charges.summary.sgstAmount,
+        status: checkout.status || 'pending'
       };
       
-      console.log('Raw charges data:', charges);
       console.log('Processed checkout data:', checkoutData);
-      console.log('Subtotal value:', checkoutData.subtotal);
-      console.log('Total amount value:', checkoutData.totalAmount);
       setCheckoutData(checkoutData);
       
-      // Calculate balance due after advance payments using correct total from backend
-      const advancePayments = booking?.advancePayments || [];
+      // Calculate balance due after advance payments
+      const advancePayments = bookingData?.advancePayments || [];
       const totalAdvance = advancePayments.reduce((sum, payment) => sum + (Number(payment.amount) || 0), 0);
       const balanceDue = Math.max(0, checkoutData.totalAmount - totalAdvance);
       
       setPaymentAmount(balanceDue.toString());
       
-      // Auto-calculate late checkout fee if current time is past checkout time
+      // Auto-calculate late checkout fee
       const now = new Date();
-      const checkoutDate = new Date(booking.checkOutDate);
-      const [hours, minutes] = (booking.timeOut || '12:00').split(':').map(Number);
+      const checkoutDate = new Date(bookingData.checkOutDate);
+      const [hours, minutes] = (bookingData.timeOut || '12:00').split(':').map(Number);
       const expectedCheckout = new Date(checkoutDate.getFullYear(), checkoutDate.getMonth(), checkoutDate.getDate(), hours, minutes);
       
       if (now > expectedCheckout) {
@@ -86,6 +85,12 @@ const HotelCheckout = ({ booking, onClose, onCheckoutComplete }) => {
   const processPayment = async () => {
     if (!paymentAmount || parseFloat(paymentAmount) <= 0) {
       showToast.error('Please enter valid payment amount');
+      return;
+    }
+
+    // Validate that checkoutData has a valid _id
+    if (!checkoutData || !checkoutData._id) {
+      showToast.error('Invalid checkout data. Please refresh and try again.');
       return;
     }
 
@@ -249,12 +254,12 @@ const HotelCheckout = ({ booking, onClose, onCheckoutComplete }) => {
                   <span className="font-medium">₹{checkoutData.subtotal}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b">
-                  <span>CGST (2.5%):</span>
-                  <span className="font-medium">₹{(checkoutData.cgstAmount || 0).toFixed(2)}</span>
+                  <span>CGST ({((booking?.cgstRate !== undefined ? booking.cgstRate : 0.025) * 100).toFixed(1)}%):</span>
+                  <span className="font-medium">₹{(checkoutData?.cgstAmount || 0).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b">
-                  <span>SGST (2.5%):</span>
-                  <span className="font-medium">₹{(checkoutData.sgstAmount || 0).toFixed(2)}</span>
+                  <span>SGST ({((booking?.sgstRate !== undefined ? booking.sgstRate : 0.025) * 100).toFixed(1)}%):</span>
+                  <span className="font-medium">₹{(checkoutData?.sgstAmount || 0).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between py-3 border-t-2 border-blue-200 text-lg font-bold">
                   <span>Total with Tax:</span>

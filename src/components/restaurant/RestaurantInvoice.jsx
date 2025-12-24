@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import ashokaLogo from '../../assets/Mapazz.png';
+import mapazzLogo from '../../assets/Mapazz.png';
 import { RiPhoneFill, RiMailFill } from 'react-icons/ri';
 import { useAppContext } from '../../context/AppContext';
 
@@ -395,7 +395,7 @@ export default function RestaurantInvoice({ orderData: propOrderData, isEmbedded
       `}</style>
       <div className="min-h-screen bg-white p-2 sm:p-4">
         <div className="max-w-7xl mx-auto border-2 border-black p-2 sm:p-4 print-content relative" style={{
-          backgroundImage: `url(${ashokaLogo})`,
+          backgroundImage: `url(${mapazzLogo})`,
           backgroundSize: '40%',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
@@ -405,7 +405,7 @@ export default function RestaurantInvoice({ orderData: propOrderData, isEmbedded
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mb-4 space-y-4 lg:space-y-0">
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
               <div className="w-20 h-20 sm:w-24 sm:h-24">
-                <img src={ashokaLogo} alt="Mapazz Logo" className="w-full h-full object-contain" />
+                <img src={mapazzLogo} alt="Mapazz Logo" className="w-full h-full object-contain" />
               </div>
               <div className="text-xs text-center sm:text-left">
                 <p className="font-bold text-sm sm:text-base">HOTEL MAPAZZ </p>

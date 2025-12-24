@@ -49,15 +49,25 @@ export const useBookingList = () => {
 
     try {
       const token = getAuthToken();
-      const [bookingsRes, roomsRes, categoriesRes] = await Promise.all([
-        axios.get("/api/bookings/all", { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get("/api/rooms/all", { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get("/api/categories/all", { headers: { Authorization: `Bearer ${token}` } })
-      ]);
+      // Single API call to get all data
+      const response = await axios.get("/api/bookings/all", { 
+        headers: { Authorization: `Bearer ${token}` } 
+      });
       
-      const bookingsData = bookingsRes.data;
-      const roomsData = Array.isArray(roomsRes.data) ? roomsRes.data : [];
-      const categoriesData = Array.isArray(categoriesRes.data) ? categoriesRes.data : [];
+      // Handle both old and new response formats
+      let bookingsData, roomsData, categoriesData;
+      
+      if (response.data.bookings) {
+        // New optimized format
+        bookingsData = response.data.bookings;
+        roomsData = response.data.rooms || [];
+        categoriesData = response.data.categories || [];
+      } else {
+        // Old format fallback
+        bookingsData = response.data;
+        roomsData = [];
+        categoriesData = [];
+      }
       
       setRooms(roomsData);
       setCategories(categoriesData);
@@ -114,7 +124,7 @@ export const useBookingList = () => {
       const sortedBookings = mappedBookings.sort((a, b) => {
         const dateA = new Date(a._raw.createdAt || a._raw.bookingDate || 0);
         const dateB = new Date(b._raw.createdAt || b._raw.bookingDate || 0);
-        return dateB - dateA; // Descending order (latest first)
+        return dateB - dateA;
       });
       
       setBookings(sortedBookings);

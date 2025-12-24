@@ -240,7 +240,7 @@ const Sidebar = () => {
       <div className={`flex items-center justify-between md:justify-center p-2 transform transition-all duration-700 delay-100 ${
         isAnimated ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
       }`}>
-        <img src={logoImage} alt="Mapazz Hotel" className="h-12 sm:h-14 md:h-16" />
+        <img src={logoImage} alt="Mapazz Hotel" className="h-16 sm:h-18 md:h-20" />
         <button
           onClick={closeSidebar}
           className="md:hidden p-2 text-[#c2ab65] hover:text-white"

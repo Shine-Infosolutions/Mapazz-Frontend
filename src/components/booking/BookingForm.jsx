@@ -414,26 +414,13 @@ export const AppProvider = ({ children }) => {
       const token = localStorage.getItem('token');
       const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
       
-      const [catRes, roomRes] = await Promise.all([
-        axios.get(`${BASE_URL}/api/categories/all`, { headers }),
-        axios.get(`${BASE_URL}/api/rooms/all`, { headers }),
-      ]);
-
-
-
-      const categories = Array.isArray(catRes.data) ? catRes.data : [];
-      const rooms = Array.isArray(roomRes.data) ? roomRes.data : [];
+      // Single API call to get both categories and rooms
+      const response = await axios.get(`${BASE_URL}/api/categories/with-rooms`, { headers });
+      
+      const { categories = [], rooms = [] } = response.data;
 
       setAllRooms(rooms);
-      
-      const categoriesWithCounts = categories.map(category => ({
-        ...category,
-        totalRooms: rooms.filter(room => {
-          return room.categoryId === category._id || room.category?._id === category._id;
-        }).length,
-        availableRoomsCount: 0, // Will be updated after availability check
-      }));
-      setAllCategories(categoriesWithCounts);
+      setAllCategories(categories);
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -1221,13 +1208,11 @@ const App = () => {
       if (isSelected) {
         newSelectedRooms = prev.filter((r) => r._id !== room._id);
       } else {
-        // Initialize custom price with the room's default price when selecting
         const roomWithCustomPrice = {
           ...room,
           customPrice: room.customPrice !== undefined ? room.customPrice : room.price || 0
         };
         newSelectedRooms = [...prev, roomWithCustomPrice];
-        console.log(`Room selected: ${room.room_number}, initialized customPrice: ${roomWithCustomPrice.customPrice}`);
       }
       
       // Calculate total rate based on selected rooms and days
@@ -1257,7 +1242,6 @@ const App = () => {
         rate: finalRate
       }));
       
-      console.log('Selected rooms after selection:', newSelectedRooms);
       return newSelectedRooms;
     });
   };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import mapazzLogo from '../../assets/Mapazz.png';
+import mapazzLogo from '../../assets/mapazz.png';
 import { RiPhoneFill, RiMailFill } from 'react-icons/ri';
 import { FaWhatsapp, FaFilePdf } from 'react-icons/fa';
 import { useAppContext } from '../../context/AppContext';
@@ -64,7 +64,7 @@ export default function Invoice() {
     const now = new Date();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const sequence = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
-    const invoiceNumber = `HH/${month}/${sequence}`;
+    const invoiceNumber = `MPZ/${month}/${sequence}`;
     localStorage.setItem(storageKey, invoiceNumber);
     
     return invoiceNumber;
@@ -303,7 +303,7 @@ export default function Invoice() {
         // Ensure invoice numbers are persistent and dates are formatted
         if (mappedData.invoiceDetails) {
           // Use existing invoice number from booking if available, otherwise generate new one
-          const billNo = bookingData?.invoiceNumber || await getOrGenerateInvoiceNumber(checkoutId, 'HH');
+          const billNo = bookingData?.invoiceNumber || await getOrGenerateInvoiceNumber(checkoutId, 'MPZ');
           mappedData.invoiceDetails.billNo = billNo;
           // Keep the original GRC from booking data
           if (!mappedData.invoiceDetails.grcNo && bookingData?.grcNo) {
@@ -1458,12 +1458,11 @@ export default function Invoice() {
                   <img src={mapazzLogo} alt="Mapazz Logo" className="w-full h-full object-contain" />
                 </div>
                 <div className="text-xs text-center sm:text-left">
-                  <p className="font-bold text-sm sm:text-base">HOTEL MAPAZZ </p>
+                  <p className="font-bold text-sm sm:text-base">MAPAZZ HOTEL</p>
                   <p className="text-xs">Deoria Bypass Rd, near LIC Office Gorakhpur</p>
                   <p className="text-xs">Taramandal, Gorakhpur, Uttar Pradesh 273016</p>
-                  <p className="text-xs">Website: <a href="https://hotelmapazz.com" className="text-blue-600">hotelmapazz.com</a></p>
+                  <p className="text-xs">Website: <a href="http://mapazz-hotel.com" className="text-blue-600">mapazz-hotel.com</a></p>
                   <p className="text-xs">contact@hotelmapazz.in</p>
-                  <p className="text-xs font-semibold">GSTIN: 09ACIFA2416J1ZF</p>
                 </div>
               </div>
               <div className="contact-info flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">

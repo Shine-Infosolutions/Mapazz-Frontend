@@ -82,111 +82,25 @@ const CheckoutPage = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const selectedBookingData = bookings.find(b => b._id === bookingId);
-      const roomId = selectedBookingData?.roomId || selectedBookingData?.room_id;
       
-      // Get inspection charges from checklist - starting with 0
-      let inspectionCharges = 0;
-      console.log('Initial inspection charges:', inspectionCharges);
-      const roomNumber = selectedBookingData?.roomNumber || selectedBookingData?.room_number;
-      const roomData = rooms.find(room => room.roomNumber === roomNumber || room.room_number === roomNumber);
-      
-      if (roomData) {
-        try {
-          const inspectionResponse = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/housekeeping/checklist/${roomData._id}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          if (Array.isArray(inspectionResponse.data)) {
-            inspectionCharges = inspectionResponse.data.reduce((total, item) => total + (item.cost || item.charge || item.costPerUnit || 0), 0);
-          } else if (inspectionResponse.data.checklist) {
-            inspectionCharges = inspectionResponse.data.checklist.reduce((total, item) => total + (item.cost || item.charge || item.costPerUnit || 0), 0);
-          }
-          console.log('Inspection charges calculated:', inspectionCharges);
-        } catch (error) {
-          console.log('No inspection charges found');
-        }
-      }
-      
-      // Get laundry charges
-      let laundryCharges = 0;
+      // First, try to get existing checkout or create one
+      let checkoutResponse;
       try {
-        const grcNo = selectedBookingData?.grcNo || selectedBookingData?.guestRegistrationCardNo;
-        const laundryResponse = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/laundry/by-grc/${grcNo}`, {
+        // Try to get existing checkout
+        checkoutResponse = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/checkout/booking/${bookingId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        const laundryData = laundryResponse.data;
-        laundryCharges = laundryData.reduce((total, item) => total + (item.totalAmount || 0), 0);
       } catch (error) {
-        console.log('No laundry charges found');
-      }
-      
-      // Get room service charges
-      let roomServiceCharges = 0;
-      try {
-        const roomServiceResponse = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/room-service/room-charges?bookingId=${bookingId}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        roomServiceCharges = roomServiceResponse.data.totalCharges || 0;
-      } catch (error) {
-        console.log('No room service charges found');
-      }
-      
-      // Get comprehensive charges using our new endpoint
-      let charges = null;
-      try {
-        const chargesResponse = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/bookings/charges/booking/${bookingId}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        
-        console.log('Charges API response:', chargesResponse.data);
-        charges = chargesResponse.data.charges;
-        console.log('Extracted charges:', charges);
-      } catch (error) {
-        console.error('Error fetching charges:', error);
-        // Fallback to old checkout API if charges endpoint fails
-        const checkoutResponse = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/checkout/create`, {
-          bookingId: bookingId,
-          roomId: roomId
+        // If no checkout exists, create one
+        checkoutResponse = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/checkout/create`, {
+          bookingId: bookingId
         }, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        
-        const fallbackData = checkoutResponse.data.checkout;
-        charges = {
-          roomCharges: { totalRoomCharges: fallbackData.bookingCharges || 0 },
-          summary: {
-            totalRoomCharges: fallbackData.bookingCharges || 0,
-            totalRestaurantCharges: 0,
-            totalServiceCharges: 0
-          },
-          restaurantOrders: [],
-          services: []
-        };
       }
       
-      // Create checkout data structure
-      const checkoutData = {
-        _id: `checkout_${bookingId}`,
-        bookingId: bookingId,
-        bookingCharges: charges.roomCharges.totalRoomCharges || 0,
-        restaurantCharges: charges.summary.totalRestaurantCharges || 0,
-        roomServiceCharges: (charges.summary.totalServiceCharges || 0) - (charges.summary.totalRestaurantCharges || 0),
-        laundryCharges: laundryCharges,
-        inspectionCharges: inspectionCharges,
-        totalAmount: (charges.roomCharges.totalRoomCharges || 0) + (charges.summary.totalRestaurantCharges || 0) + (charges.summary.totalServiceCharges || 0) + laundryCharges + inspectionCharges,
-        status: 'pending',
-        serviceItems: {
-          restaurant: charges.restaurantOrders || [],
-          services: charges.services || [],
-          laundry: [],
-          inspection: []
-        }
-      };
-      
-      console.log('Processed checkout data:', checkoutData);
-      
-      // Use the charges already calculated by the API
-      // Don't add additional charges as they're already included
+      const checkoutData = checkoutResponse.data.checkout;
+      console.log('Checkout data:', checkoutData);
       
       setCheckoutData(checkoutData);
     } catch (error) {
@@ -264,48 +178,22 @@ const CheckoutPage = () => {
       return;
     }
     
+    // Validate that checkoutData has a valid _id
+    if (!checkoutData._id) {
+      showToast.error('Invalid checkout data. Please refresh and try again.');
+      return;
+    }
+    
     try {
       const token = localStorage.getItem('token');
       
-      // Mark room service orders as paid
-      try {
-        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/room-service/mark-paid`, {
-          bookingId: selectedBooking
-        }, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-      } catch (error) {
-        console.log('No room service orders to mark as paid');
-      }
-      
-      // Process payment
+      // Process payment using the correct checkout ID
       await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/checkout/${checkoutData._id}/payment`, {
-        status: 'paid',
-        paidAmount: parseFloat(paymentAmount),
-        method: paymentMethod
+        status: 'Completed',
+        paidAmount: parseFloat(paymentAmount)
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
-      // Update booking status to 'Checked Out'
-      await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/bookings/update/${selectedBooking}`, {
-        status: 'Checked Out'
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      
-      // Update room status to available
-      const selectedBookingData = bookings.find(b => b._id === selectedBooking);
-      const roomNumber = selectedBookingData.roomNumber || selectedBookingData.room_number;
-      const roomData = rooms.find(room => room.roomNumber === roomNumber || room.room_number === roomNumber);
-      
-      if (roomData) {
-        await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/rooms/update/${roomData._id}`, {
-          status: 'available'
-        }, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-      }
       
       // Update local checkout data status immediately
       setCheckoutData(prev => ({
@@ -319,9 +207,13 @@ const CheckoutPage = () => {
       setShowPaymentForm(false);
       setPaymentAmount('');
       
+      // Refresh bookings to show updated status
+      fetchBookings();
+      
     } catch (error) {
       console.error('Error processing payment:', error);
-      showToast.error('Error processing payment');
+      const errorMessage = error.response?.data?.message || 'Error processing payment';
+      showToast.error(errorMessage);
     }
   };
 

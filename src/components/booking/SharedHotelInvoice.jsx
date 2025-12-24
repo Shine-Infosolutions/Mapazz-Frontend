@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import mapazzLogo from '../../assets/Mapazz.png';
+import mapazzLogo from '../../assets/mapazz.png';
 import { RiPhoneFill, RiMailFill } from 'react-icons/ri';
 import axios from 'axios';
 

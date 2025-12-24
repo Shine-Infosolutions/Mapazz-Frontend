@@ -25,7 +25,7 @@ const LoadingScreen = () => {
               <img 
                 src={hotelLogo} 
                 alt="Mapazz Hotel" 
-                className="w-24 h-24 object-contain animate-bounce"
+                className="w-16 h-16 object-contain animate-bounce"
                 style={{ animationDuration: '2s' }}
               />
             </div>
