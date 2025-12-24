@@ -32,7 +32,7 @@ import {
   Tag,
   Sparkles,
 } from "lucide-react";
-import logoImage from "../assets/Mapazz.png";
+import logoImage from "/mapazz.png";
 
 const Sidebar = () => {
   const [openDropdowns, setOpenDropdowns] = useState(new Set());

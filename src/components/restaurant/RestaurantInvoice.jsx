@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import mapazzLogo from '../../assets/Mapazz.png';
+import mapazzLogo from '/mapazz.png';
 import { RiPhoneFill, RiMailFill } from 'react-icons/ri';
 import { useAppContext } from '../../context/AppContext';
 

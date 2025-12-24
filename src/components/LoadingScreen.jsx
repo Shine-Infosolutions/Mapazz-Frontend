@@ -1,5 +1,5 @@
 import React from 'react';
-import hotelLogo from '../assets/Mapazz.png';
+import hotelLogo from '/mapazz.png';
 
 const LoadingScreen = () => {
   return (

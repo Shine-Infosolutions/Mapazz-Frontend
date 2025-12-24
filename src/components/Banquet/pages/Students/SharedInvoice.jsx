@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import Logo from "../../../../assets/logo.png";
+import Logo from "/mapazz.png";
 
 const SharedInvoice = () => {
   const { id } = useParams();

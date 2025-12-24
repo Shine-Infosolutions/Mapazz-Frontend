@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import mapazzLogo from '../assets/Mapazz.png';
+import mapazzLogo from '/mapazz.png';
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });

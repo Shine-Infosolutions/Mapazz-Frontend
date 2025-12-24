@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
-import Logo from "../../../../assets/hawana golden png.png";
+import Logo from "/mapazz.png";
 import { useNavigate } from "react-router-dom";
 
 
