@@ -213,8 +213,8 @@ const Dashboard = () => {
       const { data } = await axios.get("/api/rooms/all", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      const roomsData = Array.isArray(data) ? data : (data.rooms || data.data || []);
-      setRooms(roomsData);
+      const roomsData = Array.isArray(data) ? data : (data?.rooms || data?.data || []);
+      setRooms(Array.isArray(roomsData) ? roomsData : []);
     } catch (error) {
       console.log('Rooms API Error:', error);
       setRooms([]);
@@ -246,8 +246,8 @@ const Dashboard = () => {
       const { data } = await axios.get("/api/bookings/all", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      const bookingsData = Array.isArray(data) ? data : data.bookings || [];
-      setBookings(bookingsData);
+      const bookingsData = Array.isArray(data) ? data : (data?.bookings || []);
+      setBookings(Array.isArray(bookingsData) ? bookingsData : []);
     } catch (error) {
       console.log('Bookings API Error:', error);
       setBookings([]);
@@ -282,8 +282,9 @@ const Dashboard = () => {
     const now = new Date();
     const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     
-    const currentWeekBookings = bookings.filter(b => new Date(b.createdAt) >= lastWeek);
-    const previousWeekBookings = bookings.filter(b => {
+    const safeBookings = Array.isArray(bookings) ? bookings : [];
+    const currentWeekBookings = safeBookings.filter(b => new Date(b.createdAt) >= lastWeek);
+    const previousWeekBookings = safeBookings.filter(b => {
       const date = new Date(b.createdAt);
       return date >= new Date(lastWeek.getTime() - 7 * 24 * 60 * 60 * 1000) && date < lastWeek;
     });
@@ -318,7 +319,7 @@ const Dashboard = () => {
       {
         id: "bookings",
         title: "Total Bookings",
-        value: dashboardStats?.totalBookings?.toString() || bookings.length.toString(),
+        value: dashboardStats?.totalBookings?.toString() || (Array.isArray(bookings) ? bookings.length.toString() : "0"),
         icon: "Calendar",
         color: "bg-primary",
         trend: `${bookingsTrend >= 0 ? '+' : ''}${bookingsTrend.toFixed(1)}%`,
@@ -429,7 +430,8 @@ const Dashboard = () => {
 
   const roomCategories = useMemo(() => {
     const categories = {};
-    rooms.forEach(room => {
+    const safeRooms = Array.isArray(rooms) ? rooms : [];
+    safeRooms.forEach(room => {
       // Handle category as object or string
       let category = 'Standard';
       if (room.category) {

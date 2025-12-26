@@ -79,10 +79,12 @@ const RoomServiceHistory = () => {
       
       if (response.ok) {
         const data = await response.json();
-        setBookings(data || []);
+        const bookingsData = Array.isArray(data) ? data : (data?.bookings || []);
+        setBookings(Array.isArray(bookingsData) ? bookingsData : []);
       }
     } catch (error) {
       console.error('Error fetching bookings:', error);
+      setBookings([]);
     }
   };
 
@@ -219,11 +221,11 @@ const RoomServiceHistory = () => {
                 className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
               >
                 <option value="all">All Bookings</option>
-                {bookings.filter(booking => booking.status === 'Checked In').map(booking => (
+                {Array.isArray(bookings) ? bookings.filter(booking => booking.status === 'Checked In').map(booking => (
                   <option key={booking._id} value={booking._id}>
                     {booking.grcNo} - {booking.name} (Room {booking.roomNumber})
                   </option>
-                ))}
+                )) : []}
               </select>
             </div>
 
