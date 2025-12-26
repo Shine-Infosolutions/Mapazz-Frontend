@@ -1458,21 +1458,21 @@ export default function Invoice() {
                   <img src={mapazzLogo} alt="Mapazz Logo" className="w-full h-full object-contain" />
                 </div>
                 <div className="text-xs text-center sm:text-left">
-                  <p className="font-bold text-sm sm:text-base">MAPAZZ HOTEL</p>
-                  <p className="text-xs">Deoria Bypass Rd, near LIC Office Gorakhpur</p>
-                  <p className="text-xs">Taramandal, Gorakhpur, Uttar Pradesh 273016</p>
-                  <p className="text-xs">Website: <a href="http://mapazz-hotel.com" className="text-blue-600">mapazz-hotel.com</a></p>
-                  <p className="text-xs">contact@hotelmapazz.in</p>
+                  <p className="font-bold text-sm sm:text-base">MAPAZ HOTEL</p>
+                  <p className="text-xs">Ward No. 5, Mapaz Hotel, Govind Nagar Colony</p>
+                  <p className="text-xs">Tamkuhi Raj, Tamakuhi Raj, Uttar Pradesh 274407</p>
+                  <p className="text-xs">Website: <a href="http://www.mapaz.in" className="text-blue-600">www.mapaz.in</a></p>
+                  <p className="text-xs">contact@hotelmapaz.in</p>
                 </div>
               </div>
               <div className="contact-info flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
                 <div className="text-xs flex items-center space-x-2">
                     <RiPhoneFill className="text-lg text-yellow-600" />
-                    <span>+91-9451903390</span>
+                    <span>+91-7570070035</span>
                 </div>
                 <div className="text-xs flex items-center space-x-2">
                     <RiMailFill className="text-lg text-yellow-600" />
-                    <span>contact@hotelmapazz.in</span>
+                    <span>contact@hotelmapaz.in</span>
                 </div>
               </div>
             </div>

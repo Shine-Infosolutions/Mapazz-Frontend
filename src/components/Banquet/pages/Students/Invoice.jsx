@@ -193,6 +193,13 @@ const Invoice = () => {
                 />
                 <p className="text-gray-600 text-center print:text-sm print:text-black">Booking Invoice</p>
               </div>
+              <div className="text-center print:text-center">
+                <div className="text-sm text-gray-600 print:text-xs print:text-black">
+                  <p className="font-semibold">Ward No. 5, Mapaz Hotel</p>
+                  <p>Govind Nagar Colony, Tamkuhi Raj</p>
+                  <p>Tamakuhi Raj, Uttar Pradesh 274407</p>
+                </div>
+              </div>
               <div className="text-right print:text-right">
                 <p className="text-sm text-gray-600 print:text-xs print:text-black">Invoice Date</p>
                 <p className="font-semibold print:text-sm print:text-black">{formatDate(new Date())}</p>
@@ -392,7 +399,7 @@ const Invoice = () => {
 
             {/* Footer */}
             <div className="border-t border-gray-200 pt-6 text-center text-sm text-gray-600 print:pt-3 print:text-xs print:text-black">
-              <p className="mb-2 print:mb-0">Thank you for choosing Ashoka Hotel!</p>
+              <p className="mb-2 print:mb-0">Thank you for choosing mapaz Hotel!</p>
               <p className="print:hidden">For any queries, please contact us at your convenience.</p>
             </div>
           </div>
